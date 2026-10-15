@@ -6,6 +6,12 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                              QHBoxLayout, QSlider, QComboBox, QLabel)
 from PySide6.QtCore import Qt
 
+# Лимиты разрешения сетки (ползунок)
+GRID_MIN = 20
+GRID_MAX = 120
+GRID_DEFAULT = 60
+RADII_MIN = 10
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -32,9 +38,9 @@ class MainWindow(QMainWindow):
         self.label_size = QLabel("Разрешение (углы/радиус): 60x60x20", self)
         controls_layout.addWidget(self.label_size)
         self.slider_size = QSlider(Qt.Horizontal, self)
-        self.slider_size.setMinimum(20)
-        self.slider_size.setMaximum(120)  # Сетка 120х120х30 дает ~430к точек (для StructuredGrid объемный рендеринг тяжелее)
-        self.slider_size.setValue(60)
+        self.slider_size.setMinimum(GRID_MIN)
+        self.slider_size.setMaximum(GRID_MAX)  # Сетка 120х120х30 дает ~430к точек (для StructuredGrid объемный рендеринг тяжелее)
+        self.slider_size.setValue(GRID_DEFAULT)
         self.slider_size.sliderReleased.connect(self.update_data_and_volume)
         controls_layout.addWidget(self.slider_size)
 
@@ -63,7 +69,7 @@ class MainWindow(QMainWindow):
         """Генерирует тороидальную сетку StructuredGrid и рассчитывает поле."""
         n_angles = self.slider_size.value()
         # Количество слоев по малому радиусу берем чуть меньше для пропорции
-        n_radii = max(10, n_angles // 3)
+        n_radii = max(RADII_MIN, n_angles // 3)
         self.label_size.setText(f"Разрешение: {n_angles}x{n_angles}x{n_radii}")
 
         # 1. Задаем параметры геометрии тора
