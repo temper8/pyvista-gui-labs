@@ -61,7 +61,7 @@ class MainWindow(QMainWindow):
         # превращая ячейки сетки в видимые кубики (воксели).
         voxels = grid.threshold(0.2, scalars="Density")
 
-        self.p1.add_mesh(voxels, scalars="Density", cmap="plasma", show_edges=True, edge_color="black")
+        self.p1.add_mesh(voxels, scalars="Density", cmap="plasma", show_edges=True, edge_color="black", opacity=0.5)
         self.p1.show_grid()
         self.p1.reset_camera()
 
