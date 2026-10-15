@@ -1,12 +1,14 @@
 import sys
+import argparse
 import numpy as np
 import pyvista as pv
 from pyvistaqt import QtInteractor
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, size=25):
         super().__init__()
+        self.size = size
 
         self.setWindowTitle("Продвинутые методы визуализации 3D-полей")
         self.setGeometry(100, 100, 1200, 600)
@@ -28,8 +30,8 @@ class MainWindow(QMainWindow):
         self.show()
 
     def render_advanced_fields(self):
-        # Генерируем 3D-сетку (разреженную, чтобы глифы не сливались)
-        dims = (25, 25, 25)
+        # Генерируем 3D-сетку (по умолчанию разреженную, чтобы глифы не сливались)
+        dims = (self.size,) * 3
         grid = pv.ImageData(dimensions=dims)
         grid.origin = (-2, -2, -2)
         grid.spacing = (4/(dims[0]-1), 4/(dims[1]-1), 4/(dims[2]-1))
@@ -76,6 +78,13 @@ class MainWindow(QMainWindow):
         event.accept()
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Продвинутая визуализация 3D-полей в PyVista")
+    parser.add_argument("-n", "--size", type=int, default=25,
+                        help="размер сетки по каждому измерению (по умолчанию 25)")
+    args = parser.parse_args()
+    if args.size < 2:
+        parser.error("размер сетки должен быть >= 2")
+
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(args.size)
     sys.exit(app.exec())

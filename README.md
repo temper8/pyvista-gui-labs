@@ -21,8 +21,15 @@ uv run 01_basic_window.py
 * `02_matplotlib_multi.py` — Сетка из нескольких графиков Matplotlib в окне PySide6.
 * `03_matplotlib_pcolormesh.py` — Варианты `pcolormesh`: прямоугольная, искажённая и полярная сетки.
 * `04_pyvista_pcolormesh_3d.py` — Те же три сетки как 3D-поверхности в PyVista (три `QtInteractor`).
-* `05_pyvista_voxels_3d.py` — 3D-объёмные данные: воксели (threshold) против срезов и изоповерхностей.
-* `06_advanced_3d_fields.py` — Продвинутые методы: объёмный рендеринг (volume) и скалярные глифы.
+* `05_pyvista_voxels_3d.py` — 3D-объёмные данные: воксели (threshold) против срезов и изоповерхностей (`-n/--size`).
+* `06_advanced_3d_fields.py` — Продвинутые методы: объёмный рендеринг (volume) и скалярные глифы (`-n/--size`).
+
+### Размер сетки
+Примеры `05` и `06` принимают размер сетки одним значением на все три измерения (`-n/--size`, по умолчанию 40 и 25):
+```bash
+uv run 05_pyvista_voxels_3d.py -n 80
+uv run 06_advanced_3d_fields.py -n 40
+```
 
 ## ⚠️ Важно знать
 При закрытии окон Qt всегда вызывайте метод `plotter.close()` внутри события `closeEvent`, чтобы корректно завершать процессы VTK и избегать зависания приложения.
