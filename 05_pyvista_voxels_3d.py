@@ -1,12 +1,14 @@
 import sys
+import argparse
 import numpy as np
 import pyvista as pv
 from pyvistaqt import QtInteractor
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, size=40):
         super().__init__()
+        self.size = size
 
         self.setWindowTitle("3D-аналог pcolormesh (Воксели и Объемные данные)")
         self.setGeometry(100, 100, 1200, 600)
@@ -29,8 +31,8 @@ class MainWindow(QMainWindow):
         self.show()
 
     def visualize_3d_data(self):
-        # 1. Генерируем 3D-сетку координат (например, размер 40x40x40 ячеек)
-        dims = (40, 40, 40)
+        # 1. Генерируем 3D-сетку координат (одинаковый размер по всем трем осям)
+        dims = (self.size,) * 3
         x = np.linspace(-2, 2, dims[0])
         y = np.linspace(-2, 2, dims[1])
         z = np.linspace(-2, 2, dims[2])
@@ -85,6 +87,13 @@ class MainWindow(QMainWindow):
         event.accept()
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="3D-воксели и срезы в PyVista")
+    parser.add_argument("-n", "--size", type=int, default=40,
+                        help="размер сетки по каждому измерению (по умолчанию 40)")
+    args = parser.parse_args()
+    if args.size < 2:
+        parser.error("размер сетки должен быть >= 2")
+
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(args.size)
     sys.exit(app.exec())
