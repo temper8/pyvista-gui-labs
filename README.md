@@ -20,6 +20,7 @@ uv run 01_basic_window.py
 * `01_basic_window.py` — Минимальный шаблон: встраивание плоттера в окно PySide6 с кнопкой управления.
 * `02_matplotlib_multi.py` — Сетка из нескольких графиков Matplotlib в окне PySide6.
 * `03_matplotlib_pcolormesh.py` — Варианты `pcolormesh`: прямоугольная, искажённая и полярная сетки.
+* `04_pyvista_pcolormesh_3d.py` — Те же три сетки как 3D-поверхности в PyVista (три `QtInteractor`).
 
 ## ⚠️ Важно знать
 При закрытии окон Qt всегда вызывайте метод `plotter.close()` внутри события `closeEvent`, чтобы корректно завершать процессы VTK и избегать зависания приложения.
